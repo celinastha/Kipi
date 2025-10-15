@@ -3,7 +3,9 @@ import './Messages.css'
 
 const Messages = () => {
   return (
-    <div className='Messages'>Messages</div>
+    <div className='Messages'>
+      Messages
+    </div>
   )
 }
 
