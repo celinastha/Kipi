@@ -1,3 +1,14 @@
 .Profile{
-    background-color: rgb(132, 0, 255);
+  min-height: 100vh;
+  width: 100%;
+  background: #7E5C96;
+  display: grid;
+  place-items: center;
+}
+
+.logo {
+  font-family: "Bubblegum Sans", cursive;
+  font-size: clamp(48px, 10vw, 140px);
+  color: #fff;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
