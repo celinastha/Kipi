@@ -1,6 +1,6 @@
 import React from 'react'
 import './Navbar.css'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {Link, useLocation, useNavigate } from 'react-router-dom'
 import { IoMdSearch } from "react-icons/io";
 import { FaUserFriends } from "react-icons/fa";
@@ -8,22 +8,46 @@ import { LuMessageCircleMore } from "react-icons/lu";
 import { SlCalender } from "react-icons/sl";
 import { IoNotifications } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
+import { useAuth } from '../../Context/AuthContext';
 
 const Navbar = () => {
 
     const [hovered, setHovered] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+    const { logout, token } = useAuth();
+    const [contextReady, setContextReady] = useState(false);
+
+    useEffect(() => {
+        setContextReady(true);
+    }, []);
+
 
     const handleLogout = async () => {
-        await logout();
-        navigate('/auth');
-    }
+        if (!contextReady) return;
+        console.log("Navbar logout token:", token);
+
+        if (!token) {
+            console.warn("No token available for logout");
+            logout();
+            return navigate("/auth");
+        }
+
+        try {
+        await fetch("http://localhost:3000/auth/logout", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        logout();
+        navigate("/auth");
+        } catch (err) {
+        console.error("Logout failed", err);
+        }
+    };
+
 
     if (location.pathname === '/auth') {
         return null;
-    } else {
-        handleLogout();
     };
 
     const links = [
