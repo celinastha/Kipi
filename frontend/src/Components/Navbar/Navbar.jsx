@@ -1,27 +1,85 @@
 import React from 'react'
 import './Navbar.css'
+import { useState } from 'react';
+import {Link, useLocation, useNavigate } from 'react-router-dom'
 import { IoMdSearch } from "react-icons/io";
 import { FaUserFriends } from "react-icons/fa";
 import { LuMessageCircleMore } from "react-icons/lu";
 import { SlCalender } from "react-icons/sl";
 import { IoNotifications } from "react-icons/io5";
+import { FiLogOut } from "react-icons/fi";
 
 const Navbar = () => {
+
+    const [hovered, setHovered] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await logout();
+        navigate('/auth');
+    }
+
+    if (location.pathname === '/auth') {
+        return null;
+    } else {
+        handleLogout();
+    };
+
+    const links = [
+    { id: 1, to: "/search", icon: <IoMdSearch className='icon search_icon'/>, label: "Search" },
+    { id: 2, to: "/friends", icon: <FaUserFriends className='icon friends_icon'/>, label: "Friends" },
+    { id: 3, to: "/messages", icon: <LuMessageCircleMore className='icon messages_icon'/>, label: "Messages" },
+    { id: 4, to: "/calender", icon: <SlCalender className='icon calender_icon'/>, label: "Calender" },
+    { id: 5, to: "/notifications", icon: <IoNotifications className='icon notifications_icon'/>, label: "Notifications" },
+  ];
+
+
   return (
     <div className='Navbar'>
         <div className='myAvatar'>
+            <Link to="/profile">
             <img src="https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_1.png"></img>
+            </Link>
         </div>
-        <div className='navIcons'>
-            <li className='navIconsList'>
-                <ul>
-                    <a><IoMdSearch className='icon'/></a>
-                    <a><FaUserFriends className='icon icon2'/></a>
-                    <a><LuMessageCircleMore className='icon icon2'/></a>
-                    <a><SlCalender className='icon icon3'/></a>
-                    <a><IoNotifications className='icon icon2'/></a>
-                </ul>
-            </li>
+        <div className='navIconsList'>
+
+            {links.map(({ id, to, icon, label }) => {
+                const isActive = location.pathname === to;
+                return(
+                    <div>
+                        <div
+                            key={id}
+                            className='navLink'
+                            onMouseEnter={() => setHovered(id)}
+                            onMouseLeave={() => setHovered(null)}
+                        >
+                            <Link to={to} className={`navIcon ${isActive? "active" : ""}`}>
+                                {icon}
+                            </Link>
+                        </div>
+
+                        {hovered === id && (
+                            <div className="hovered_label">
+                                {label}
+                            </div>
+                        )}
+                    
+                    </div>
+                ); 
+            })}
+            
+            <div className="logout navIcon" 
+                onClick={handleLogout}
+                onMouseEnter={() => setHovered("logout")}
+                onMouseLeave={() => setHovered(null)}
+            >
+                <FiLogOut className='icon logout_icon'/>
+                {hovered === "logout" && (
+                    <div className="hovered_label">Logout</div>
+                )}
+            </div>
+
         </div>
     </div>
   )

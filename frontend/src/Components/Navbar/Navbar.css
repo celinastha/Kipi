@@ -4,52 +4,68 @@
     width: 100px;
     position: sticky;
     padding: 18px;
-    border-radius: 0 50px 50px 0px;
+    border-radius: 0;
 }
 
 .myAvatar img{
     width: 60px;
-    border-radius: 50%;
-}
-
-.navIcons{
-    margin: 50px 0;
+    border-radius: 30%;
+    cursor: pointer;
 }
 
 .navIconsList{
-    list-style: none;
-}
-
-.navIconsList ul{
+    margin: 50px 0;
     display: flex;
     flex-direction: column;
-    gap: 1.6lh;
+    gap: 1.8rem;
     align-items: center;
     justify-content: center;
-}
+} 
 
-.navIconsList ul a {
+.navIcon {
+    display: block;
     background-color: inherit;
-    padding: 8px 10px;
-    border-radius: 50%;
+    padding: 7px 9px;
+    border-radius: 30%;
     color: #7E5C96;
-    transition: all 0.2s ease-in-out;
-
-    &:hover {
-        background-color: #7E5C96;
-        color: rgb(255, 255, 255);
-    }
+    transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
 }
+
+.navIcon:hover{
+    background-color: #d5c9df;
+    color: rgb(255, 255, 255);
+}
+
+.active{
+    background-color: #7E5C96 !important;
+    color: rgb(255, 255, 255);
+}
+
 
 .icon{
     stroke-width: 30;
     font-size: 1.5em;
     
 }
-.icon2{
+.friends_icon, .messages_icon, .notifications_icon, .logout_icon{
     stroke-width: 2.5;
     
 }
-.icon3{
+.calender_icon{
     stroke-width: 50;
 }
+
+.hovered_label {
+  position: absolute;
+  left: 50px;
+  background: white;
+  color: #5e5e5e;
+  padding: 4px 8px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  white-space: nowrap;
+}
+
+
+
