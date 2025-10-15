@@ -8,6 +8,9 @@ import Friends from './Pages/Friends/Friends.jsx'
 import Messages from './Pages/Messages/Messages.jsx'
 import Calender from './Pages/Calender/Calender.jsx'
 import Notifications from './Pages/Notifications/Notifications.jsx'
+import { ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 function App() {
@@ -27,6 +30,7 @@ function App() {
           <Route path="/calender" element={<Calender />} />
           <Route path="/notifications" element={<Notifications />} />
         </Routes>
+        <ToastContainer/>
       </div>
     </div>
   
