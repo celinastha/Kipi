@@ -5,26 +5,30 @@ import { FaUserFriends } from "react-icons/fa";
 import { LuMessageCircleMore } from "react-icons/lu";
 import { SlCalender } from "react-icons/sl";
 import { IoNotifications } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+export default function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <div className='Navbar'>
-        <div className='myAvatar'>
-            <img src="https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_1.png"></img>
-        </div>
-        <div className='navIcons'>
-            <li className='navIconsList'>
-                <ul>
-                    <a><IoMdSearch className='icon'/></a>
-                    <a><FaUserFriends className='icon icon2'/></a>
-                    <a><LuMessageCircleMore className='icon icon2'/></a>
-                    <a><SlCalender className='icon icon3'/></a>
-                    <a><IoNotifications className='icon icon2'/></a>
-                </ul>
-            </li>
-        </div>
-    </div>
-  )
-}
+      <div className='myAvatar' onClick={() => navigate('/')} style={{ cursor: 'pointer'}}>
+        <img src="https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_1.png" alt="User Avatar" />
+      </div>
 
-export default Navbar
+      <div className='navIcons'>
+        <li className='navIconsList'>
+          <ul>
+            <button className="navbtn"><IoMdSearch className='icon'/></button>
+            <button className="navbtn"><FaUserFriends className='icon icon2'/></button>
+            <button className="navbtn" onClick={() => navigate('/messages')}>
+              <LuMessageCircleMore className='icon icon2'/>
+            </button>
+            <button className="navbtn"><SlCalender className='icon icon3'/></button>
+            <button className="navbtn"><IoNotifications className='icon icon2'/></button>
+          </ul>
+        </li>
+      </div>
+    </div>
+  );
+}

@@ -1,8 +1,10 @@
 .Navbar{
+    overflow: visible;
     background-color: #ffffffce;
     height: 100vh;
     width: 100px;
     position: sticky;
+    top: 0;
     padding: 18px;
     border-radius: 0 50px 50px 0px;
 }
@@ -28,27 +30,27 @@
     justify-content: center;
 }
 
-.navIconsList ul a {
+/* style buttons like your previous <a> tags */
+.navIconsList ul .navbtn {
     background-color: inherit;
     padding: 8px 10px;
     border-radius: 50%;
     color: #7E5C96;
     transition: all 0.2s ease-in-out;
-
-    &:hover {
-        background-color: #7E5C96;
-        color: rgb(255, 255, 255);
-    }
+    border: none;
+    cursor: pointer;
+}
+.navIconsList ul .navbtn:hover {
+    background-color: #7E5C96;
+    color: #fff;
 }
 
 .icon{
     stroke-width: 30;
     font-size: 1.5em;
-    
 }
 .icon2{
     stroke-width: 2.5;
-    
 }
 .icon3{
     stroke-width: 50;

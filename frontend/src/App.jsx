@@ -1,18 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import Navbar from './Components/Navbar/Navbar.jsx'
+import Home from './Pages/Home/Home.jsx'
+import MessagesPage from './Pages/Messages/Messages.jsx'
+import { Routes, Route } from 'react-router-dom'
+import './index.css'  
 
-
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <div>
-      <Navbar/>
+    <div className="app-shell">
+      <Navbar />
+      <div className="content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/messages" element={<MessagesPage />} />
+        </Routes>
+      </div>
     </div>
-  
-  )
+  );
 }
-
-export default App

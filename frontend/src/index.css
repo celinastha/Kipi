@@ -1,9 +1,15 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
 }
 
-body{
-  background-color: #e9e9e9;
+/* content next to the navbar */
+.content {
+  flex: 1;
 }
