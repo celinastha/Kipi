@@ -58,6 +58,9 @@ const Navbar = () => {
     { id: 5, to: "/notifications", icon: <IoNotifications className='icon notifications_icon'/>, label: "Notifications" },
   ];
 
+     <button className="navbtn" onClick={() => navigate('/calender')}>
+       <SlCalender className="icon icon3" />
+       </button>
 
   return (
     <div className='Navbar'>
