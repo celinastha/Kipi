@@ -1,3 +1,121 @@
-.Calender{
-    background-color: rgb(255, 174, 0);
+/* match Messages page proportions */
+
+.CalenderPage {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;            /* Fill full screen height */
+  width: 100%;
+  background: #f4f2f7;
+  overflow: hidden;          /* Avoid double scrollbars */
+}
+
+.calender-sidebar {
+  width: 280px;               /* narrower like your Messages sidebar */
+  background: #f9f8fb;
+  border-right: 1px solid #e4dff0;
+  padding: 20px;
+  border-radius: 0 30px 30px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;              /* Stretch full height */
+  overflow-y: auto;          /* Scroll if content exceeds height */
+}
+.side-title { 
+  font-size: 20px; font-weight: 700; margin-bottom: 14px; 
+}
+
+/* MINI MONTH — compact grid */
+.month-mini .fc { background: transparent; border: 0; font-size: 12px; }
+.month-mini .fc .fc-scrollgrid,
+.month-mini .fc .fc-scrollgrid-section > * { border: 0; }
+.month-mini .fc .fc-col-header-cell { padding: 4px 0; }
+.month-mini .fc .fc-daygrid-day { padding: 2px; border: 0; }
+.month-mini .fc .fc-daygrid-day-frame {
+  background: #fff;
+  border-radius: 10px;
+  min-height: 34px;                 /* smaller cell height */
+  display: grid;
+  place-items: center;
+  transition: background .15s ease-in-out;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.month-mini .fc .fc-daygrid-day:hover .fc-daygrid-day-frame { background: #ece7f3; }
+.month-mini .fc .fc-day-today .fc-daygrid-day-frame {
+  outline: 2px solid #7e5c96;
+  background: #f3ecfe;
+}
+
+/* tiny dots instead of full event chips */
+.fc-dot {
+  display: inline-block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #7e5c96; margin-top: 2px;
+}
+.fc-event.holiday .fc-dot { background:#f06292; }
+.fc-event.task .fc-dot { background:#3cb371; }
+.fc-event.personal .fc-dot { background:#ffac33; }
+
+/* Legend (kept tidy at bottom) */
+.legend { margin-top: auto; display:flex; flex-direction:column; gap:6px; font-size:13px; }
+.legend .dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:6px; }
+.dot.work { background:#7e5c96; } .dot.personal{background:#ffac33;}
+.dot.task{background:#3cb371;} .dot.holiday{background:#f06292;}
+
+/* RIGHT: day schedule styled like chat area */
+.day-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;     
+  background: #faf8fc;
+  border-radius: 30px 0 0 0;   /* same as Messages */
+  padding: 24px 32px 32px;
+  overflow: hidden;
+}
+
+.day-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #faf8fc;
+  padding: 24px 32px 8px;
+}
+
+.day-body {
+  flex: 1;
+  min-height: 0;              /* important so child can size in flex */
+  overflow: auto;
+  padding: 0 32px 24px;
+}
+.month-top { font-weight: 700; font-size: 18px; opacity: .8; }
+.big-day-wrap { display:flex; align-items:baseline; gap:12px; }
+.big-day { font-size: 140px; line-height: .85; font-weight: 900; letter-spacing: -3px; }
+.big-day-sub { font-weight: 700; font-size: 20px; color: #a33; transform: translateY(10px); }
+.divider { height: 1px; background: #e4dff0; margin: 10px 0 16px; }
+
+/* listDay as “cards” with color rails */
+.day-view .fc { background: transparent; border: 0; }
+.day-view .fc .fc-list { border: 0; background: transparent; }
+.day-view .fc .fc-list-day { display:none; } /* we show our own big header */
+.day-view .fc .fc-list-table { border-collapse: separate; border-spacing: 0 12px; }
+.day-view .fc .fc-list-event {
+  background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,.05);
+  border-left:4px solid transparent;
+}
+.day-view .fc .fc-list-event:hover { background:#f3eefc; }
+.day-view .fc .fc-list-event-title, .day-view .fc .fc-list-event-time {
+  padding: 12px 16px;
+}
+
+/* rails by type (same colors you’re using) */
+.day-view .fc .fc-list-event.work { border-left-color:#7e5c96; }
+.day-view .fc .fc-list-event.personal { border-left-color:#ffac33; }
+.day-view .fc .fc-list-event.task { border-left-color:#3cb371; }
+.day-view .fc .fc-list-event.holiday { border-left-color:#f06292; }
+
+/* generic empty state card */
+.event-card.no-events {
+  background:#fff; border-radius:12px; padding:18px; text-align:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
 }

@@ -6,7 +6,8 @@ import Profile from './Pages/Profile/Profile.jsx'
 import Search from './Pages/Search/Search.jsx'
 import Friends from './Pages/Friends/Friends.jsx'
 import Messages from './Pages/Messages/Messages.jsx'
-import Calender from './Pages/Calender/Calender.jsx'
+import CalenderPage from './Pages/Calender/Calender.jsx'
+import './index.css';
 import Notifications from './Pages/Notifications/Notifications.jsx'
 import { ToastContainer, toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,7 +28,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/messages" element={<Messages />} />
-          <Route path="/calender" element={<Calender />} />
+          <Route path="/calender" element={<CalenderPage />} />
           <Route path="/notifications" element={<Notifications />} />
         </Routes>
         <ToastContainer/>
