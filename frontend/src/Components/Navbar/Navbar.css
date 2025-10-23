@@ -33,12 +33,12 @@
 }
 
 .navIcon:hover{
-    background-color: #d5c9df;
+    background-color: #bdacca;
     color: rgb(255, 255, 255);
 }
 
 .active{
-    background-color: #7E5C96 !important;
+    background-color: #634875 !important;
     color: rgb(255, 255, 255);
 }
 

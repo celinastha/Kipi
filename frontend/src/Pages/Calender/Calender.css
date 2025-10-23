@@ -17,7 +17,9 @@
   border-radius: 0 30px 30px 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: top;
+  gap: 8px;
   height: 100%;              /* Stretch full height */
   overflow-y: auto;          /* Scroll if content exceeds height */
 }
@@ -41,6 +43,11 @@
   box-shadow: 0 1px 2px rgba(0,0,0,.04);
 }
 .month-mini .fc .fc-daygrid-day:hover .fc-daygrid-day-frame { background: #ece7f3; }
+.month-mini .fc .fc-daygrid-day:active .fc-daygrid-day-frame { 
+  outline: 2px solid #7e5c96;
+  background: #f3ecfe;  
+}
+
 .month-mini .fc .fc-day-today .fc-daygrid-day-frame {
   outline: 2px solid #7e5c96;
   background: #f3ecfe;
@@ -57,7 +64,7 @@
 .fc-event.personal .fc-dot { background:#ffac33; }
 
 /* Legend (kept tidy at bottom) */
-.legend { margin-top: auto; display:flex; flex-direction:column; gap:6px; font-size:13px; }
+.legend { margin-top: 30px; display:flex; flex-direction:column; gap:6px; font-size:13px; }
 .legend .dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:6px; }
 .dot.work { background:#7e5c96; } .dot.personal{background:#ffac33;}
 .dot.task{background:#3cb371;} .dot.holiday{background:#f06292;}

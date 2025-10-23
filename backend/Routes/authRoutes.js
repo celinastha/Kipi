@@ -17,15 +17,9 @@ router.post("/signup", async (req, res) => {
 
     const fullUser = await admin.auth().getUser(userRecord.uid);
 
-    const token = jwt.sign(
-        { uid: fullUser.uid, email: fullUser.email, name: fullUser.displayName }, 
-        JWT_SECRET,
-        { expiresIn: "2h",}
-    );
-
     console.log("Signup backend name:", fullUser.displayName);
 
-    res.status(201).json({ token, email: fullUser.email, name: fullUser.displayName });
+    res.status(201).json({ message: "User created", email: fullUser.email, name: fullUser.displayName });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -51,13 +45,7 @@ router.post("/login", async (req, res) => {
     const name = userInfo.displayName;
     console.log("Login backend sending to front name: ", name);
 
-    const token = jwt.sign(
-        { uid: data.localId, email: data.email, name }, 
-        JWT_SECRET,
-        { expiresIn: "2h", }
-    );
-    console.log("Login: returning name:", name);
-    res.json({ token, email: data.email, name });
+    res.json({ token: data.idToken, email: data.email, name });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -72,43 +60,13 @@ router.post("/logout", async (req, res) => {
   }
   const token = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = await admin.auth().verifyIdToken(token);
     await admin.auth().revokeRefreshTokens(decoded.uid);
     res.json({ message: "Logged out successfully" });
   } catch (err) {
     console.error("Logout failed:", err.message);
     res.status(401).json({ error: "Invalid or expired token" });
   }
-});
-
-
-
-
-// Middleware
-const verifyJWT = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Missing or malformed token" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    console.error("JWT verification failed:", err.message);
-    return res.status(403).json({ error: "Invalid or expired token" });
-  }
-};
-
-
-
-// Protected route
-router.get("/profile", verifyJWT, (req, res) => {
-  res.json({ message: `Hello, ${req.user.email}` });
 });
 
 export default router;
