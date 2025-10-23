@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoles from './Routes/authRoutes.js'
+import protectedRoutes from './Routes/protected.js'
 
 dotenv.config();
 const app = express();
@@ -10,6 +11,7 @@ app.use(cors());
 
 
 app.use("/auth", authRoles);
+app.use("/protected", protectedRoutes); 
 
 
 // Start server

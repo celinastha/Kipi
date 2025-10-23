@@ -46,7 +46,7 @@ const Navbar = () => {
     };
 
 
-    if (location.pathname === '/auth') {
+    if (location.pathname === '/auth' || location.pathname === '/unauthorized') {
         return null;
     };
 

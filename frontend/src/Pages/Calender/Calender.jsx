@@ -6,8 +6,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import './calender.css';
 
-const GOOGLE_API_KEY = "AIzaSyBN-TexpYXjYglz6uLKJA6zJMKhlBn0BHM";
-const HOLIDAY_CAL_ID = "en.usa#holiday@group.v.calendar.google.com";
 
 export default function CalenderPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -24,7 +22,7 @@ export default function CalenderPage() {
 
   const eventSources = [
     { events: myEvents },
-    { googleCalendarId: HOLIDAY_CAL_ID, classNames: ["holiday"] },
+    { googleCalendarId: import.meta.env.HOLIDAY_CAL_ID, classNames: ["holiday"] },
   ];
 
   const onDateClick = (info) => {
@@ -51,7 +49,7 @@ export default function CalenderPage() {
             initialDate={selectedDate}
             fixedWeekCount={false}
             height="auto"
-            googleCalendarApiKey={GOOGLE_API_KEY}
+            googleCalendarApiKey={import.meta.env.GOOGLE_API_KEY}
             events={myEvents}
             eventSources={eventSources}
             dateClick={onDateClick}
@@ -88,7 +86,7 @@ export default function CalenderPage() {
           headerToolbar={false}
           initialView="listDay"
           initialDate={selectedDate}
-          googleCalendarApiKey={GOOGLE_API_KEY}
+          googleCalendarApiKey={import.meta.env.GOOGLE_API_KEY}
           events={myEvents}
           eventSources={eventSources}
           noEventsContent={() => <div className="event-card no-events">No events</div>}

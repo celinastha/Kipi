@@ -1,0 +1,9 @@
+.Unauthorized{
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.authLink{
+    color: "#007bff";
+    text-decoration: underline;
+}
