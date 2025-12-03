@@ -11,10 +11,6 @@ function randomColor() {
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
-
-
-const router = express.Router();
-
 router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
   console.log("Received backend: ", {name, email});
