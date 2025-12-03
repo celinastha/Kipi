@@ -7,7 +7,8 @@ dotenv.config();
 const serviceAccount = require("./FirebaseServiceAccountKey.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
+  projectId: "kipi-6b014"
 });
 
 export default admin;

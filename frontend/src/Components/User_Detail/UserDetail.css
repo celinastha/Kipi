@@ -1,0 +1,70 @@
+.UserDetail{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+h2{
+    font-size: 2em;
+}
+
+.floating{
+    position: absolute;
+    top: 25vh;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
+}
+
+.floating img{
+    border-radius: 50%;
+}
+.detailTop{
+    background-color: #D3C9DB;
+    width: 100%;
+    height: 35vh;
+}
+
+.detailBottom{
+    background-color: transparent;
+    width: 100%;
+    height: 65vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 50px;
+    padding-top: 80px;
+    background-color: #F4F2F7;
+}
+
+.detailButtons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.detailInfo{
+    background-color: rgb(255, 255, 255);
+    width: 50%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.detailInfo h5{
+    font-size: 1em;
+}

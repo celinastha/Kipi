@@ -1,3 +1,18 @@
 .Friends{
-    background-color: rgb(0, 204, 255);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    background: #f4f2f7;
+    color: #3a2c4b;
+    font-family: 'Inter', sans-serif;
+}
+
+.searchAllSidebar{
+    width: 400px;
+    flex-shrink: 0;
+}
+.friendDetails{
+    flex: 1;
+    overflow-y: auto;
 }

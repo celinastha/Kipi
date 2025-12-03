@@ -30,3 +30,4 @@ router.get("/notifications", (req, res) => {
 });
 
 export default router;
+

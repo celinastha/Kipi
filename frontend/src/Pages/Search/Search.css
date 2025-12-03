@@ -1,3 +1,18 @@
 .Search{
-    background-color: rgb(255, 0, 170);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    background-color: #D3C9DB;
+    color: #3a2c4b;
+    font-family: 'Inter', sans-serif;
+}
+
+.searchAllSidebar{
+    width: 400px;
+    flex-shrink: 0;
+}
+.userDetails{
+    flex: 1;
+    overflow-y: auto;
 }

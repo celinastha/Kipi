@@ -1,0 +1,33 @@
+.btn{
+    width: max-content;
+    background: linear-gradient(rgb(185, 115, 185), rgb(134, 82, 134));
+    color: white;
+    margin: 0;
+    padding: 6px 12px;
+}
+
+.btn:hover{
+    background: linear-gradient(rgb(117, 72, 117), rgb(117, 72, 117))
+}
+
+.accept_reject_btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.cancelRequestBtn, .unfriendBtn{
+    background: linear-gradient(rgb(196, 155, 196), rgb(196, 155, 196));
+}
+
+.cancelRequestBtn:hover, .unfriendBtn:hover{
+    background: linear-gradient(rgb(177, 144, 177), rgb(177, 144, 177));
+}
+
+.userDetailBtn{
+    width: max-content;
+    padding: 10px 50px;
+    margin:0;
+}
