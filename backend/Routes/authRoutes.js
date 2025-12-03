@@ -151,6 +151,16 @@ router.put("/update-profile", async (req, res) => {
 
     await admin.auth().updateUser(uid, updateData);
 
+     // Update MySQL 
+    const sql = `
+      UPDATE users 
+      SET name = COALESCE(?, name),
+          email = COALESCE(?, email)
+      WHERE firebase_uid = ?
+    `;
+    await db.query(sql, [displayName || null, email || null, uid]);
+
+
     const updatedUser = await admin.auth().getUser(uid);
 
     res.json({ 
