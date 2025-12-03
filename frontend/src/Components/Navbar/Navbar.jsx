@@ -2,6 +2,7 @@ import React from 'react'
 import './Navbar.css'
 import { useState, useEffect } from 'react';
 import {Link, useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import { IoMdSearch } from "react-icons/io";
 import { FaUserFriends } from "react-icons/fa";
 import { LuMessageCircleMore } from "react-icons/lu";
@@ -15,12 +16,30 @@ const Navbar = () => {
     const [hovered, setHovered] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-    const { logout, token } = useAuth();
+    const { logout, token, currentUserId } = useAuth();
     const [contextReady, setContextReady] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [currentPfp, setCurrentPfp] = useState(null);
 
     useEffect(() => {
         setContextReady(true);
     }, []);
+
+    useEffect(() => {
+            const fetchUser = async () => {
+            try {
+                const res = await fetch(`http://localhost:3000/users/${currentUserId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+                });
+                const data = await res.json();
+                setCurrentUser(data);
+                setCurrentPfp(data.pfp);
+            } catch (err) {
+                console.error("Failed to fetch user:", err);
+            }
+            };
+            if (token) fetchUser();
+    }, [token, currentUserId, currentUser]);
 
 
     const handleLogout = async () => {
@@ -40,6 +59,8 @@ const Navbar = () => {
         });
         logout();
         navigate("/auth");
+        toast.success("Logged Out Successfully!", { autoClose: 1800, closeButton: false });
+        
         } catch (err) {
         console.error("Logout failed", err);
         }
@@ -56,19 +77,23 @@ const Navbar = () => {
     { id: 3, to: "/messages", icon: <LuMessageCircleMore className='icon messages_icon'/>, label: "Messages" },
     { id: 4, to: "/calender", icon: <SlCalender className='icon calender_icon'/>, label: "Calender" },
     { id: 5, to: "/notifications", icon: <IoNotifications className='icon notifications_icon'/>, label: "Notifications" },
-  ];
-
-     <button className="navbtn" onClick={() => navigate('/calender')}>
-       <SlCalender className="icon icon3" />
-       </button>
+  ];   
 
   return (
     <div className='Navbar'>
-        <div className='myAvatar'>
+        <div className="myPfp" 
+            onMouseEnter={() => setHovered("profile")}
+            onMouseLeave={() => setHovered(null)}
+        >
             <Link to="/profile">
-            <img src="https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_1.png"></img>
+                <img src={currentPfp}></img>
+                {hovered === "profile" && (
+                    <div className="hovered_label">Profile</div>
+                )}
             </Link>
         </div>
+
+
         <div className='navIconsList'>
 
             {links.map(({ id, to, icon, label }) => {
@@ -112,4 +137,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;

@@ -14,38 +14,22 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
-
+  const { authService } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    const endpoint = isLogin ? "login" : "signup";
-    const body = isLogin?
-      { email, password }
-      : { name, email, password };
-
-
     try {
-      const res = await fetch(`http://localhost:3000/auth/${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
 
-      const data = await res.json();
+      const endpoint = isLogin ? "login" : "signup";
+      const payload = isLogin?
+        { email, password }
+        : { name, email, password };
 
-      if (data.error) throw new Error(data.error);
-      login(data.token, data.name);
-
-      console.log("Sending to backend:", {
-        name,
-        email,
-        password,
-      });
+      await authService(endpoint, payload);
       
-      toast.success(`${isLogin ? "Logged in" : "Account created"} successfully!`, { autoClose: 1800 });
+      toast.success(`${isLogin ? "Logged in" : "Account created"} successfully!`, { autoClose: 1800, closeButton: false });
 
       setEmail("");
       setPassword("");
@@ -60,11 +44,10 @@ const Auth = () => {
       
     } catch (err) {
       setError(err.message);
-      toast.error(err.message, { autoClose: 1800 });
+      toast.error(err.message, { autoClose: 1800, closeButton: false });
     }
   };
 
-  
 
 
   return (

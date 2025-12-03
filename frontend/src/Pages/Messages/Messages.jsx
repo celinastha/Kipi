@@ -1,20 +1,36 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import './Messages.css';
 import { FaPlus } from 'react-icons/fa';
+import { useAuth } from '../../Context/AuthContext';
+import Search_All from '../../Components/Search_ALL/Search_All';
 
 
-const people = [
- { id: 1, name: 'Person 1', avatar: 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_9.png' },
- { id: 2, name: 'Person 2', avatar: 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_2.png' },
- { id: 3, name: 'Person 3', avatar: 'https://cdn.jsdelivr.net/gh/alohe/memojis/png/vibrent_3.png' },
-];
+const Messages = () => {
+  const { token, currentUserId } = useAuth();
+  const [acceptedFriendsList, setAcceptedFriendsList] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+  console.log("Selected ID: ", selectedId);
+
+  const selectedPerson = acceptedFriendsList.find(u => u.id === selectedId);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/friends/accepted/${currentUserId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setAcceptedFriendsList(data);
+        console.log(data);
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+      }
+    };
+    if (token) fetchUser();
+  }, [token, currentUserId]);
 
 
-export default function Messages() {
- const [selectedId, setSelectedId] = useState(people[0].id);
-
-
- // Store conversations by person id: { [id]: Message[] }
+ /*// Store conversations by person id: { [id]: Message[] }
  const [conversations, setConversations] = useState(() => ({
    1: [
      { id: 1, text: 'Hello!', sender: 'them' },
@@ -30,10 +46,7 @@ export default function Messages() {
  const [inputValue, setInputValue] = useState('');
 
 
- const selectedPerson = useMemo(
-   () => people.find(p => p.id === selectedId),
-   [selectedId]
- );
+ 
 
 
  const messages = conversations[selectedId] || [];
@@ -55,34 +68,28 @@ export default function Messages() {
      [selectedId]: [...(prev[selectedId] || []), msg],
    }));
    setInputValue('');
- };
+ };*/
 
 
  return (
    <div className="MessagesPage">
      {/* Left sidebar */}
-     <div className="sidebar">
-       <h2>Messages</h2>
-       <ul className="person-list">
-         {people.map((p) => (
-           <li
-             key={p.id}
-             className={`person ${p.id === selectedId ? 'selected' : ''}`}
-             onClick={() => handleSelect(p.id)}
-           >
-             <img src={p.avatar} alt={p.name} />
-             <span>{p.name}</span>
-           </li>
-         ))}
-       </ul>
-     </div>
+     <Search_All 
+        peopleList={acceptedFriendsList}
+        currentUserId={currentUserId}
+        token={token}
+        selectedUser={selectedPerson}
+        setSelectedUserId={setSelectedId}
+        setPeopleList={setAcceptedFriendsList}
+        title="Messages"
+      />
 
-
-     {/* Chat section */}
+    {/*
+     Comment -- line Chat section 
      <div className="chat-area">
        <div className="chat-header">
          <div className="chat-person">
-           <img src={selectedPerson.avatar} alt={selectedPerson.name} />
+           <img src={selectedPerson.pfp} alt={selectedPerson.name} />
            <span>{selectedPerson.name}</span>
          </div>
        </div>
@@ -119,7 +126,9 @@ export default function Messages() {
            <FaPlus />
          </button>
        </div>
-     </div>
+     </div> */}
    </div>
  );
 }
+
+export default Messages

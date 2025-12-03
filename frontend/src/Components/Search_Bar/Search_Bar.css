@@ -1,0 +1,29 @@
+.Search_Bar{
+    margin: 0;
+    width: 100%;
+}
+
+.search_input{
+    position: relative;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    padding: 11px 0 11px 35px;
+    font-size: 0.9em;
+    transition: border 0.1s ease-in-out;
+    border: none;
+    outline: none;
+    border-bottom: 0.5px solid rgba(68, 50, 68, 0.397);
+}
+
+.search_input:hover, .typing{
+    border-bottom: none;
+    border: 0.5px solid rgba(68, 50, 68, 0.397);
+}
+
+.searchIcon{
+    position: absolute;
+    z-index: 1;
+    margin: 11px 12px;
+    color: rgb(160, 118, 160);
+}
