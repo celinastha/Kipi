@@ -6,7 +6,7 @@ import './Profile.css';
 import { MdEdit, MdSave, MdCancel } from "react-icons/md";
 
 const Profile = () => {
-  const { token, name, login } = useAuth();
+  const { token, name, authService } = useAuth();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ const Profile = () => {
     try {
       // Validate passwords match if changing password
       if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
-        toast.error("New passwords don't match!");
+        toast.error("New passwords don't match!", { autoClose: 1800, closeButton: false });
         setLoading(false);
         return;
       }
@@ -67,10 +67,10 @@ const Profile = () => {
 
       // Update local auth context with new name if changed
       if (formData.displayName !== name) {
-        login(token, formData.displayName);
+        authService(token, formData.displayName);
       }
 
-      toast.success('Profile updated successfully!');
+      toast.success('Profile updated successfully!',{ autoClose: 1800, closeButton: false });
       setIsEditing(false);
       
       // Clear password fields
@@ -82,7 +82,7 @@ const Profile = () => {
       });
 
     } catch (error) {
-      toast.error(error.message || 'Failed to update profile');
+      toast.error(error.message || 'Failed to update profile',{ autoClose: 1800, closeButton: false });
     } finally {
       setLoading(false);
     }
