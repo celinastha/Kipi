@@ -1,0 +1,233 @@
+.FriendsPage {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  background: #f4f2f7;
+  overflow: hidden;
+}
+
+/* LEFT – CURRENT FRIENDS */
+
+.friends-sidebar {
+  width: 280px;
+  background: #f9f8fb;
+  border-right: 1px solid #e4dff0;
+  padding: 20px;
+  border-radius: 0 30px 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.friends-sidebar-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.friends-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.friends-search-wrapper {
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  border: 1px solid #ece7fb;
+}
+
+.friends-search-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  background: transparent;
+  color: #2c2442;
+}
+
+.friends-search-input::placeholder {
+  color: #a9a3c4;
+}
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* friend row item */
+
+.friend-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  background: #ffffff;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.18s ease, transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.friend-row:hover {
+  box-shadow: 0 12px 24px rgba(22, 15, 50, 0.08);
+  transform: translateY(-1px);
+}
+
+.friend-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c6cf6, #c86bff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.friend-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.friend-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #251b3b;
+}
+
+.friend-role {
+  font-size: 11px;
+  color: #9b96b6;
+}
+
+/* RIGHT – POSSIBLE MATCHES */
+
+.friends-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 40px;
+  overflow-y: auto;
+}
+
+.friends-main-header {
+  margin-bottom: 20px;
+}
+
+.friends-main-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #251b3b;
+}
+
+.friends-main-subtitle {
+  font-size: 13px;
+  color: #9b96b6;
+  margin-top: 4px;
+}
+
+/* MATCH CARDS SECTION */
+
+.matches-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.match-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px 16px 14px 16px;
+  box-shadow: 0 10px 25px rgba(22, 15, 50, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+}
+
+.match-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.match-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f4f0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #6a5ce6;
+}
+
+.match-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.match-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #251b3b;
+}
+
+.match-role {
+  font-size: 12px;
+  color: #9b96b6;
+}
+
+/* buttons at bottom of each match card */
+
+.match-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.match-add-btn,
+.match-message-btn {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 999px;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease,
+    box-shadow 0.18s ease, color 0.18s ease;
+}
+
+.match-add-btn {
+  background: #6b5df7;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(107, 93, 247, 0.3);
+}
+
+.match-add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(107, 93, 247, 0.4);
+}
+
+.match-message-btn {
+  background: #f5f3ff;
+  color: #6b5df7;
+}
+
+.match-message-btn:hover {
+  background: #ebe6ff;
+}

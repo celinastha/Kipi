@@ -1,0 +1,410 @@
+/* match Messages page proportions */
+
+.CalenderPage {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  background: #f4f2f7;
+  overflow: hidden;
+}
+
+.calender-sidebar {
+  width: 280px;
+  background: #f9f8fb;
+  border-right: 1px solid #e4dff0;
+  padding: 20px;
+  border-radius: 0 30px 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: top;
+  gap: 8px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.side-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+/* MINI MONTH — compact grid */
+.month-mini .fc {
+  background: transparent;
+  border: 0;
+  font-size: 12px;
+}
+.month-mini .fc .fc-scrollgrid,
+.month-mini .fc .fc-scrollgrid-section > * {
+  border: 0;
+}
+.month-mini .fc .fc-col-header-cell {
+  padding: 4px 0;
+}
+.month-mini .fc .fc-daygrid-day {
+  padding: 2px;
+  border: 0;
+}
+
+/* 🔧 CHANGED: layout so dots + "+X more" stack nicely INSIDE the box */
+.month-mini .fc .fc-daygrid-day-frame {
+  background: #fff;
+  border-radius: 10px;
+  min-height: 34px;
+  display: flex;                /* was grid */
+  flex-direction: column;       /* stack content vertically */
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0;
+  transition: background .15s ease-in-out;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+
+.month-mini .fc .fc-daygrid-day:hover .fc-daygrid-day-frame {
+  background: #ece7f3;
+}
+.month-mini .fc .fc-daygrid-day:active .fc-daygrid-day-frame {
+  outline: 2px solid #7e5c96;
+  background: #f3ecfe;
+}
+
+.month-mini .fc .fc-day-today .fc-daygrid-day-frame {
+  outline: 2px solid #7e5c96;
+  background: #f3ecfe;
+}
+
+/* clicked/selected day in the mini month */
+.month-mini .fc .fc-daygrid-day.mini-selected-day .fc-daygrid-day-frame {
+  background: rgba(126, 92, 150, 0.15);
+  box-shadow: 0 0 0 1px rgba(126, 92, 150, 0.4);
+}
+
+/* keep it purple even while hovering */
+.month-mini .fc .fc-daygrid-day.mini-selected-day:hover .fc-daygrid-day-frame {
+  background: rgba(126, 92, 150, 0.15);
+}
+
+/* tiny dots instead of full event chips */
+.fc-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7e5c96;
+  margin-top: 2px;
+}
+.fc-event.holiday .fc-dot { background:#f06292; }
+.fc-event.task .fc-dot { background:#3cb371; }
+.fc-event.personal .fc-dot { background:#ffac33; }
+
+/* 🔧 NEW: only show the first dot; the rest go into "+X more" */
+.month-mini .fc-daygrid-day .fc-daygrid-event-harness:nth-of-type(n+2) {
+  display: none !important;
+}
+
+/* 🔧 NEW-ish: make "+X more" stay inside the box, under the dot */
+.month-mini .fc .fc-daygrid-more-link {
+  display: block !important;
+  position: relative !important;
+  margin-top: 2px;
+  font-size: 11px;
+  color: #7e5c96;
+  text-align: center;
+}
+
+/* Legend */
+.legend {
+  margin-top: 30px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-size:13px;
+}
+.legend .dot {
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  display:inline-block;
+  margin-right:6px;
+}
+.dot.work { background:#7e5c96; }
+.dot.personal { background:#ffac33; }
+.dot.task { background:#3cb371; }
+.dot.holiday { background:#f06292; }
+
+/* RIGHT: day schedule */
+.day-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #faf8fc;
+  border-radius: 30px 0 0 0;
+  padding: 24px 32px 32px;
+  overflow: hidden;
+}
+
+.day-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #faf8fc;
+  padding: 24px 32px 8px;
+}
+
+.day-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 32px 24px;
+}
+
+.month-top {
+  font-weight: 700;
+  font-size: 18px;
+  opacity: .8;
+}
+.big-day-wrap {
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+}
+.big-day {
+  font-size: 140px;
+  line-height: .85;
+  font-weight: 900;
+  letter-spacing: -3px;
+}
+.big-day-sub {
+  font-weight: 700;
+  font-size: 20px;
+  color: #a33;
+  transform: translateY(10px);
+}
+.divider {
+  height: 1px;
+  background: #e4dff0;
+  margin: 10px 0 16px;
+}
+
+/* generic empty state card */
+.event-card.no-events {
+  background:#fff;
+  border-radius:12px;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+
+/* add-event form */
+.event-form {
+  margin-bottom: 16px;
+}
+
+.event-form-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.event-form-row input[type="text"],
+.event-form-row input[type="time"],
+.event-form-row select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #e0d8f0;
+  font-size: 13px;
+  background: #fff;
+}
+
+.event-form-row button[type="submit"] {
+  width: 90px;    /* small button */
+  padding: 4px 0;
+  font-size: 12px;
+  border-radius: 999px;
+  margin-left: auto;
+}
+
+.event-form-row button:hover {
+  opacity: 0.9;
+}
+
+.event-form-hint {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* EVENTS LIST (right side) */
+
+.events-section {
+  margin-top: 20px;
+}
+
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.events-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.event-card-row {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  position: relative; /* for popup menu */
+}
+
+/* left icon bubble */
+.event-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: #f5ecff;
+}
+
+/* tint icon bg by type */
+.event-card-row.work .event-icon {
+  background: rgba(126, 92, 150, 0.12);
+}
+.event-card-row.personal .event-icon {
+  background: rgba(255, 172, 51, 0.15);
+}
+.event-card-row.task .event-icon {
+  background: rgba(60, 179, 113, 0.12);
+}
+
+.event-main {
+  flex: 1;
+}
+
+.event-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.event-sub {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* right columns */
+.event-time {
+  font-size: 13px;
+  min-width: 90px;
+  text-align: right;
+}
+
+.event-location {
+  font-size: 13px;
+  min-width: 120px;
+  text-align: right;
+  opacity: 0.8;
+}
+
+/* three-dot menu */
+
+.event-menu-wrapper {
+  position: relative;
+}
+
+.event-menu-dots {
+  background: #f3eaff;
+  border: 1px solid #d5baf3;
+  color: #7e5c96;
+  border-radius: 6px;
+  padding: 2px 4px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: auto;
+  width: fit-content;
+}
+
+.event-menu-dots:hover {
+  background: #ead9ff;
+}
+
+/* popup menu */
+.event-menu {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  border-radius: 12px;
+  min-width: 110px;
+  padding: 4px 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  z-index: 30;
+}
+
+/* popup menu buttons */
+.event-menu button {
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  font-size: 13px;
+  text-align: left;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+/* Edit purple */
+.event-menu button.edit {
+  color: #7e5c96;
+  font-weight: 600;
+}
+
+/* Delete red */
+.event-menu button.delete {
+  color: #d63a3a;
+}
+
+.event-menu button:hover {
+  background: #f5f0ff;
+}
+
+/* empty state row */
+.event-card-row.no-events-row {
+  justify-content: center;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* small cancel button next to Add/Save */
+.event-cancel-btn {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  margin-left: 4px;
+  cursor: pointer;
+  color: #777;
+}
+
+.event-cancel-btn:hover {
+  color: #444;
+}
