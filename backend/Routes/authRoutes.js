@@ -52,13 +52,18 @@ router.post("/signup", async (req, res) => {
       await admin.auth().deleteUser(firebase_uid);
       return res.status(500).json({ error: 'Failed to save user in MySQL' });
     }
+    
+    const [rows] = await db.query("SELECT id FROM users WHERE firebase_uid = ?", [firebase_uid]);
+    const currentUserId = rows[0].id;
+
     res.status(201).json({
-      message: 'User created and synced',
+      message: "User created and synced",
       email: fullUser.email,
       name: fullUser.displayName,
-      firebase_uid,
-      pfp
+      currentUserId, // ✅ return MySQL id
+      pfp,
     });
+
 
   } catch (error) {
     console.error('Signup error:', error);

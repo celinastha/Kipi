@@ -1,7 +1,7 @@
 .Search_All {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 25px;
     justify-content: flex-start;
     align-items: flex-start;
     height: 100vh;
@@ -20,10 +20,11 @@
  font-weight: 700;
  padding-left: 12px;
  color: #3a2c4b;
+ margin-bottom: none;
 }
 
 
-.person-list {
+.person-list, .group-list {
     width: 100%;
     list-style: none;
     padding: 0;
@@ -33,7 +34,7 @@
 
 }
 
-.person_name_pfp{
+.person_name_pfp, .group_pic_name{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -41,27 +42,42 @@
     gap: 8px;
 }
 
-.person {
+.person, .group {
  display: flex;
  flex-direction: row;
  align-items: center;
  justify-content: space-between;
  padding: 10px 12px;
- border-radius: 50%;
+ border-radius: 12px;
  cursor: pointer;
  transition: background 0.1s ease-in-out;
  
 }
 
+.group-list{
+    margin-top: 30px;
+}
 
-.person:hover, .Search_All .selected {
- background: #fff !important;
+.person:hover, .group:hover {
+ background: rgba(212, 176, 212, 0.315) !important;
+ border: 0.5px solid rgba(212, 176, 212, 0.418);
+}
+
+.Search_All .selected{
+ background: rgb(255, 255, 255) !important;
  border: 0.5px solid rgba(212, 176, 212, 0.418);
 }
 
 
-.person_pfp{
+.person_pfp, .group_pic{
  width: 40px;
  height: 40px;
  border-radius: 50%;
 }
+ 
+.group-btn{
+    width: 100%;
+    padding: 8px 20px;
+    margin-top: 0px;
+}
+

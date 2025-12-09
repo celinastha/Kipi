@@ -4,6 +4,7 @@ import './UserDetail.css'
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import { Link } from 'react-router-dom';
 
 const UserDetail = ({ user, currentUserId, token, setPeopleList }) => {
   if (!user) return <div className="UserDetail">Select a user</div>;
@@ -54,7 +55,9 @@ const UserDetail = ({ user, currentUserId, token, setPeopleList }) => {
 
             {friendsList?.some(friend => friend.id === user.id) && (
                 <div className="messageActionBtn">
-                  <button className="userDetailBtn messageFriendBtn">Message</button>
+                  <Link to="/messages">
+                    <button className="userDetailBtn messageFriendBtn">Message</button>
+                  </Link>
                 </div>
             )}
         </div>
