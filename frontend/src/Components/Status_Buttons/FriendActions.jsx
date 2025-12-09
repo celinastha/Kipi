@@ -4,6 +4,7 @@ import CancelRequestBtn from "./CancelRequestBtn";
 import AcceptRejectBtn from "./AcceptRejectBtn";
 import UnfriendBtn from "./UnfriendBtn";
 
+//Buttons based on friend status
 const FriendActions = ({ user, currentUserId, token, setPeopleList, variant }) => {
   if (!user.status) {
     return (
@@ -17,6 +18,7 @@ const FriendActions = ({ user, currentUserId, token, setPeopleList, variant }) =
     );
   }
 
+  //cancel btn shown if requested
   if (user.status === "pending" && user.requester_id === currentUserId) {
     return (
       <CancelRequestBtn
@@ -29,6 +31,7 @@ const FriendActions = ({ user, currentUserId, token, setPeopleList, variant }) =
     );
   }
 
+   //accept reject btn shown if got request
   if (user.status === "pending" && user.receiver_id === currentUserId) {
     return (
       <AcceptRejectBtn
@@ -41,6 +44,7 @@ const FriendActions = ({ user, currentUserId, token, setPeopleList, variant }) =
     );
   }
 
+   //unfriend btn shown if accepted
   if (user.status === "accepted") {
     return (
       <UnfriendBtn
