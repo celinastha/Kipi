@@ -18,7 +18,7 @@ A full-stack React + Node.js chat and social app with:
 
 ## 1. Clone and install
 Clone the repository:
-- git clone https://github.com/celinastha/Kipi
+- git clone https://github.com/celinastha/Kipi <br>
 cd <project-root>
 - Kipi in this case
 Install dependencies in 2 different terminals
