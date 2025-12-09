@@ -2,6 +2,7 @@ import { Router } from 'express';
 import express from'express';
 import admin from '../Firebase/firebaseAdmin.js';
 import db from "../MySQL/db.js";
+import { deBuffer } from '../utils/debuffer.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.get('/:userId', async (req, res) => {
     `;
   try {
     const [rows] = await db.query(query, [userId, userId]);
-    res.json(rows);
+    res.json(deBuffer(rows));
   } catch (err) {
     res.status(500).send(err);
   }
@@ -40,7 +41,7 @@ router.get('/pending/:userId', async (req, res) => {
     `;
   try {
     const [rows] = await db.query(query, [userId, userId]);
-    res.json(rows);
+    res.json(deBuffer(rows));
   } catch (err) {
     res.status(500).send(err);
   }
@@ -61,8 +62,9 @@ router.get('/accepted/:userId', async (req, res) => {
     `;
   try {
     const [rows] = await db.query(query, [userId, userId]);
-    res.json(rows);
+    res.json(deBuffer(rows));
   } catch (err) {
+    console.error("Error fetching accepted friends:", err);
     res.status(500).send(err);
   }
 

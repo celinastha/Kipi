@@ -1,14 +1,28 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import './Messages.css';
-import { FaPlus } from 'react-icons/fa';
+import { IoMdSend } from "react-icons/io";
 import { useAuth } from '../../Context/AuthContext';
 import Search_All from '../../Components/Search_ALL/Search_All';
+import { io } from "socket.io-client";
 
+const SOCKET_URL = "http://localhost:3000";
 
 const Messages = () => {
-  const { token, currentUserId } = useAuth();
+    const { token, currentUserId, logout } = useAuth();
+  const [socket, setSocket] = useState(null);
+
   const [acceptedFriendsList, setAcceptedFriendsList] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
+  const [conversations, setConversations] = useState([]); 
+  const [activeConversation, setActiveConversation] = useState(null); 
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+
+  const [showGroupModal, setShowGroupModal] = useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [selectedMembers, setSelectedMembers] = useState(new Set());
+
   console.log("Selected ID: ", selectedId);
 
   const selectedPerson = acceptedFriendsList.find(u => u.id === selectedId);
@@ -30,49 +44,143 @@ const Messages = () => {
   }, [token, currentUserId]);
 
 
- /*// Store conversations by person id: { [id]: Message[] }
- const [conversations, setConversations] = useState(() => ({
-   1: [
-     { id: 1, text: 'Hello!', sender: 'them' },
-     { id: 2, text: 'Hi! How are you?', sender: 'me' },
-     { id: 3, text: 'Doing great, thanks!', sender: 'them' },
-   ],
-   // 2 and 3 start empty — “new conversation”
-   2: [],
-   3: [],
- }));
+  // Load conversations (groups + DMs)
+  const loadConversations = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/conversations/list/${currentUserId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setConversations(data.conversations || []);
+    } catch (err) {
+      console.error("Failed to fetch conversations:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (token) loadConversations();
+  }, [token, currentUserId]);
+
+  // Socket connection
+  useEffect(() => {
+    if (!token) return;
+
+    const s = io(SOCKET_URL, {
+      auth: { token },
+      transports: ["websocket", "polling"],
+    });
+
+    setSocket(s);
+
+   
+    s.on("message", (msg) => {
+      if (activeConversation && msg.conversationId === activeConversation.id) {
+        setMessages((prev) => {
+          if (prev.some(m => m.id === msg.id)) return prev;
+          return [...prev, msg];
+        });
+      }
+      // update sidebar preview
+      setConversations((prev) =>
+        prev.map(c =>
+          c.id === msg.conversationId
+            ? { ...c, lastMessage: msg.text, lastUpdatedAt: new Date().toISOString() }
+            : c
+        )
+      );
+    });
+
+    s.on("dmReady", ({ conversationId }) => {
+      setActiveConversation({ id: conversationId, isGroup: false });
+      s.emit("joinRoom", { conversationId });
+      loadHistory(conversationId);
+      loadConversations();
+    });
+
+    s.on("groupReady", ({ conversationId }) => {
+      setActiveConversation({ id: conversationId, isGroup: true });
+      s.emit("joinRoom", { conversationId });
+      loadHistory(conversationId);
+      setShowGroupModal(false);
+      loadConversations();
+    });
+
+    s.on("connect_error", (err) => {
+      console.error("Socket connect error:", err.message);
+      if (err.message.includes("Unauthorized") || err.message.includes("expired")) {
+        alert("Session expired. Please log in again.");
+        logout();
+      }
+    });
+
+    return () => s.disconnect();
+  }, [token, logout, activeConversation]);
 
 
- const [inputValue, setInputValue] = useState('');
+  useEffect(() => {
+    const chatBox = document.querySelector(".chat-messages");
+    if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+  }, [messages]);
 
+  // Load chat history
+  const loadHistory = async (conversationId) => {
+    try {
+      const res = await fetch(`http://localhost:3000/conversations/${conversationId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setMessages(data.messages || []);
+    } catch (err) {
+      console.error("Failed to load history:", err);
+    }
+  };
 
- 
+  // Start DM
+  const startDM = (otherId) => {
+    socket?.emit("startDM", { otherId });
+  };
 
+  // Send message with optimistic append
+  const sendMessage = () => {
+    if (!activeConversation?.id || !inputValue.trim()) return;
 
- const messages = conversations[selectedId] || [];
+    const newMsg = {
+      text: inputValue,
+      senderId: currentUserId,
+      conversationId: activeConversation.id,
+      id: `temp-${Date.now()}`, // temporary id
+    };
 
+    setMessages((prev) => [...prev, newMsg]);
 
- const handleSelect = (id) => {
-   setSelectedId(id);
-   // Ensure a thread exists
-   setConversations(prev => (prev[id] ? prev : { ...prev, [id]: [] }));
- };
+    socket.emit("sendMessage", {
+      conversationId: activeConversation.id,
+      text: inputValue,
+    });
 
+    setInputValue("");
+  };
 
- const handleSend = () => {
-   const text = inputValue.trim();
-   if (!text) return;
-   const msg = { id: Date.now(), text, sender: 'me' };
-   setConversations(prev => ({
-     ...prev,
-     [selectedId]: [...(prev[selectedId] || []), msg],
-   }));
-   setInputValue('');
- };*/
+  const toggleMember = (id) => {
+    const next = new Set(selectedMembers);
+    next.has(id) ? next.delete(id) : next.add(id);
+    setSelectedMembers(next);
+  };
 
+  const createGroup = () =>
+    socket.emit("createGroup", {
+      name: groupName,
+      memberIds: [...selectedMembers],
+    });
 
- return (
-   <div className="MessagesPage">
+  const openConversation = (conv) => {
+    setActiveConversation(conv);
+    socket?.emit("joinRoom", { conversationId: conv.id });
+    loadHistory(conv.id);
+  };
+
+  return (
+    <div className="MessagesPage">
      {/* Left sidebar */}
      <Search_All 
         peopleList={acceptedFriendsList}
@@ -82,53 +190,88 @@ const Messages = () => {
         setSelectedUserId={setSelectedId}
         setPeopleList={setAcceptedFriendsList}
         title="Messages"
+        onStartDM={startDM}
+        onOpenGroupModal={() => setShowGroupModal(true)}
+        conversations={conversations} // ✅ pass groups + DMs
+        onOpenConversation={openConversation}
+        activeConversation={activeConversation}
       />
 
-    {/*
-     Comment -- line Chat section 
-     <div className="chat-area">
-       <div className="chat-header">
-         <div className="chat-person">
-           <img src={selectedPerson.pfp} alt={selectedPerson.name} />
-           <span>{selectedPerson.name}</span>
-         </div>
-       </div>
+    {/* Group modal */}
+      {showGroupModal && (
+        <div className="group-modal">
+          <div className="modal-content">
+            <h3>Create Group</h3>
+            <input
+              value={groupName}
+              onChange={(e) => setGroupName(e.target.value)}
+              placeholder="Group name"
+            />
+            {acceptedFriendsList.map((f) => (
+              <label key={f.id}>
+                <input
+                  type="checkbox"
+                  checked={selectedMembers.has(f.id)}
+                  onChange={() => toggleMember(f.id)}
+                />
+                {f.name}
+              </label>
+            ))}
+            <div className='modal-btns'>
+                <button onClick={createGroup}>Create</button>
+                <button onClick={() => setShowGroupModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
 
+     {/* Chat area */}
+      <div className="chat-area">
+        <div className="chat-header">
+          {activeConversation ? (
+            <div className="chat-person">
+              <span>
+                {activeConversation.isGroup
+                  ? (conversations.find(c => c.id === activeConversation.id)?.name || "Group")
+                  : (conversations.find(c => c.id === activeConversation.id)?.dmWith?.name || "Direct Message")}
+              </span>
+            </div>
+          ) : (
+            <span>Select a friend or group</span>
+          )}
+        </div>
 
-       <div className="chat-messages">
-         {messages.length === 0 ? (
-           <div className="empty-thread" style={{opacity:.8}}>
-             <div style={{fontWeight:700, marginBottom:8}}>Start a conversation</div>
-             <div>Say hi to {selectedPerson.name} 👋</div>
-           </div>
-         ) : (
-           messages.map((msg) => (
-             <div
-               key={msg.id}
-               className={`chat-bubble ${msg.sender === 'me' ? 'me' : 'them'}`}
-             >
-               {msg.text}
-             </div>
-           ))
-         )}
-       </div>
+        <div className="chat-messages">
+          {messages.map((m, i) => {
+            const sender = m.senderId ?? m.senderUid;
+            const mine = String(sender) === String(currentUserId);
+            return (
+              <div
+                key={m.id || i}
+                className={`chat-bubble ${mine ? "me" : ""}`}
+              >
+                {m.text}
+              </div>
+            );
+          })}
+        </div>
 
+        <div className="chat-input">
+          <input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            disabled={!activeConversation?.id}
+            placeholder="Type a message..."
+          />
+          <button onClick={sendMessage} disabled={!activeConversation?.id}>
+            <IoMdSend />
+          </button>
+        </div>
+      </div>
 
-       <div className="chat-input">
-         <input
-           type="text"
-           placeholder="Type Here!"
-           value={inputValue}
-           onChange={(e) => setInputValue(e.target.value)}
-           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-         />
-         <button onClick={handleSend} aria-label="Send">
-           <FaPlus />
-         </button>
-       </div>
-     </div> */}
-   </div>
- );
+    </div>
+  )
 }
 
-export default Messages
+export default Messages;

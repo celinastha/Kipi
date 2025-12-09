@@ -18,6 +18,10 @@ const Friends = () => {
             const res = await fetch(`http://localhost:3000/friends/${currentUserId}`, {
             headers: { Authorization: `Bearer ${token}` },
             });
+            if (!res.ok) {
+                console.error("Failed to fetch friends:", res.status);
+                return;
+            }
             const data = await res.json();
             if (Array.isArray(data)) {
                 const pending = data.filter((u) => u.status === "pending");

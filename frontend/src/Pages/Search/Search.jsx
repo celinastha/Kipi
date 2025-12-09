@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import './Search.css'
 import Search_All from '../../Components/Search_ALL/Search_All'
 import UserDetail from '../../Components/User_Detail/UserDetail'
-//import people from '../../assets/people'
 import { useAuth } from '../../Context/AuthContext'
 import { useEffect } from 'react'
 
