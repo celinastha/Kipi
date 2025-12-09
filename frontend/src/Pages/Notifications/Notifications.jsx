@@ -4,7 +4,7 @@ import './Notifications.css'
 const Notifications = () => {
   return (
     <div className='Notifications'>
-      Notifications
+      Notifications Comming Soon!
     </div>
   )
 }

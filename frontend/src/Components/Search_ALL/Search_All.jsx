@@ -27,6 +27,7 @@ const Search_All = ({
   const [queryActive, setQueryActive] = useState(false);
   const location = useLocation();
 
+  //Filter and return users list with ranks (clost to query on top)
   const handleSearch = (query) => {
     const q = query.toLowerCase();
 
@@ -65,7 +66,7 @@ const Search_All = ({
 
       <SearchBar placeholder="Search" onSearch={handleSearch} />
 
-      {/* Friends list */}
+      {/* Users list: all users in search, friends in friends and accepted friends in messages */}
       {location.pathname === "/messages" && (<h3>Friends</h3>)}
       <ul className="person-list">
         {queryActive && filtered.length === 0 ? (

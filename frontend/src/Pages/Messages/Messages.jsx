@@ -27,6 +27,7 @@ const Messages = () => {
 
   const selectedPerson = acceptedFriendsList.find(u => u.id === selectedId);
 
+  //feth all accepted users
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -61,7 +62,7 @@ const Messages = () => {
     if (token) loadConversations();
   }, [token, currentUserId]);
 
-  // Socket connection
+  // Socket connection ready to chat
   useEffect(() => {
     if (!token) return;
 
